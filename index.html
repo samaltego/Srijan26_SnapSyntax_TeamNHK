@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLASSIFIED FILES — RESIDENT EVIL</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--red:#cc0000;--red-dark:#8b0000;--red-glow:rgba(204,0,0,0.25);--bg:#070707;--bg2:#0d0d0d;--text:#e0d8d0;--dim:#706860;--dimmer:#403830}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;cursor:none;overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.12) 2px,rgba(0,0,0,0.12) 4px);pointer-events:none;z-index:9999}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:#0a0a0a}::-webkit-scrollbar-thumb{background:var(--red)}
+/* CURSOR */
+#cur{position:fixed;width:22px;height:22px;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform 0.1s}
+#cur::before,#cur::after{content:'';position:absolute;background:var(--red)}
+#cur::before{width:1px;height:10px;left:50%;top:50%;transform:translate(-50%,-50%)}
+#cur::after{width:10px;height:1px;left:50%;top:50%;transform:translate(-50%,-50%)}
+#cur-ring{position:absolute;inset:-2px;border:1px solid var(--red);border-radius:50%;animation:ringPulse 2s ease-in-out infinite;opacity:0.7}
+#cur-dot{position:absolute;width:3px;height:3px;background:#ff0000;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:0.7}50%{transform:scale(1.4);opacity:0.3}}
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:1000;padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,7,0.9);border-bottom:1px solid rgba(204,0,0,0.15);backdrop-filter:blur(20px)}
+.n-logo{display:flex;align-items:center;gap:0.6rem;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;letter-spacing:0.35em;color:var(--red);text-transform:uppercase}
+.bh-spin{animation:spinFull 10s linear infinite;transform-origin:center}
+@keyframes spinFull{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.n-links{display:flex;gap:2rem}
+.n-links a{font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;color:var(--dimmer);text-decoration:none;text-transform:uppercase;transition:color 0.3s;position:relative}
+.n-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--red);transition:width 0.3s}
+.n-links a:hover{color:var(--red)}.n-links a:hover::after{width:100%}
+.n-badge{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--red);animation:blink 1.5s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+/* HERO */
+#hero{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 60%,#1a0303 0%,var(--bg) 65%)}
+.h-particles{position:absolute;inset:0;pointer-events:none}
+.ptcl{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--red);animation:floatUp linear infinite;opacity:0}
+@keyframes floatUp{0%{transform:translateY(100vh);opacity:0}8%{opacity:0.9}85%{opacity:0.2}100%{transform:translateY(-5vh) translateX(15px);opacity:0}}
+.h-bh{position:absolute;font-size:min(50vw,500px);line-height:1;color:var(--red);opacity:0.04;pointer-events:none;animation:spinFull 40s linear infinite;user-select:none;font-family:serif}
+.h-rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.h-ring{border-radius:50%;border:1px solid rgba(204,0,0,0.06);position:absolute;animation:ringExpand 4s ease-in-out infinite}
+.h-ring:nth-child(1){width:300px;height:300px;animation-delay:0s}
+.h-ring:nth-child(2){width:500px;height:500px;animation-delay:1s}
+.h-ring:nth-child(3){width:700px;height:700px;animation-delay:2s}
+@keyframes ringExpand{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.08;transform:scale(1.05)}}
+.h-content{position:relative;z-index:10;text-align:center;padding:0 1rem}
+.h-tag{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.45em;color:var(--red);text-transform:uppercase;margin-bottom:1.2rem;opacity:0;animation:fadeUp 0.8s ease forwards 0.5s}
+.h-title{font-family:'Orbitron',monospace;font-size:clamp(3.5rem,10vw,8rem);font-weight:900;text-transform:uppercase;line-height:0.85;letter-spacing:-0.02em;opacity:0;animation:fadeUp 0.9s ease forwards 0.8s}
+.h-title .t1{display:block;color:var(--text)}
+.h-title .t2{display:block;font-size:0.38em;letter-spacing:0.35em;color:var(--red);font-weight:400;margin-top:0.3em}
+.h-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);margin:1.5rem auto;opacity:0;animation:fadeUp 0.8s ease forwards 1.2s}
+.h-sub{font-size:0.85rem;letter-spacing:0.2em;color:var(--dimmer);text-transform:uppercase;opacity:0;animation:fadeUp 0.8s ease forwards 1.4s}
+.h-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.6rem;opacity:0;animation:fadeIn 1s ease forwards 2.2s}
+.h-scroll span{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.25em;color:var(--dimmer)}
+.h-arrow{width:16px;height:16px;border-right:1px solid var(--red);border-bottom:1px solid var(--red);transform:rotate(45deg);animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* GLITCH on hover of title */
+.glitch-wrap{position:relative;display:inline-block}
+/* DIVIDER */
+.s-div{height:1px;background:linear-gradient(90deg,transparent,var(--red) 20%,var(--red) 80%,transparent);position:relative;margin:0}
+.s-div::after{content:'◈';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--red);background:var(--bg);padding:0 1rem;font-size:0.7rem}
+/* SECTION HEADER */
+.sec-tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.45em;color:var(--red);text-transform:uppercase;margin-bottom:0.6rem}
+.sec-title{font-family:'Orbitron',monospace;font-size:clamp(1.5rem,4vw,2.8rem);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--text)}
+.sec-desc{font-size:0.95rem;color:var(--dim);letter-spacing:0.04em;margin-top:0.75rem;line-height:1.7}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(35px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+/* === CHARACTERS === */
+#characters{background:var(--bg);padding:5rem 2rem 6rem;position:relative}
+#characters::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 50%,rgba(80,0,0,0.07) 0%,transparent 45%),radial-gradient(circle at 85% 30%,rgba(60,0,0,0.05) 0%,transparent 40%);pointer-events:none}
+.filter-row{display:flex;justify-content:center;gap:0.75rem;margin:2.5rem 0;flex-wrap:wrap}
+.f-btn{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.45rem 1.2rem;border:1px solid #2a2020;background:transparent;color:var(--dimmer);cursor:none;transition:all 0.3s}
+.f-btn:hover,.f-btn.act{border-color:var(--red);color:var(--red);background:rgba(204,0,0,0.06)}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;max-width:1200px;margin:0 auto}
+/* CARD */
+.c-card{position:relative;height:370px;cursor:none;overflow:hidden;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));opacity:0;transform:translateY(40px);transition:opacity 0.6s ease,transform 0.6s ease,box-shadow 0.3s ease}
+.c-card.vis{opacity:1;transform:translateY(0)}
+.c-card:hover{box-shadow:0 18px 60px rgba(204,0,0,0.25);transform:translateY(-6px) scale(1.015)}
+.c-card:hover .c-cta{opacity:1;transform:translateX(0)}
+.c-card:hover .c-glow{opacity:1}
+.c-card:hover .c-border{border-color:rgba(204,0,0,0.45)}
+.c-bg{position:absolute;inset:0}
+.c-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px);pointer-events:none}
+.c-glow{position:absolute;inset:0;opacity:0;transition:opacity 0.4s}
+.c-border{position:absolute;inset:0;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));border:1px solid rgba(255,255,255,0.07);transition:border-color 0.4s;pointer-events:none}
+.c-corner{position:absolute;top:0;right:0;width:18px;height:18px;background:rgba(204,0,0,0.25);pointer-events:none}
+.c-initials{position:absolute;bottom:-0.1em;right:-0.05em;font-family:'Orbitron',monospace;font-weight:900;font-size:4.5rem;color:rgba(255,255,255,0.04);letter-spacing:-0.05em;line-height:1;pointer-events:none;user-select:none}
+.c-sweep{position:absolute;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(204,0,0,0.4),transparent);top:0;opacity:0;transition:all 0s}
+.c-card:hover .c-sweep{opacity:1;top:100%;transition:top 1.5s linear,opacity 0.3s}
+.c-content{position:absolute;inset:0;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between}
+.c-badge{display:inline-flex;align-items:center;gap:0.35rem;font-family:'Share Tech Mono',monospace;font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.22rem 0.7rem;border:1px solid}
+.hero-b{border-color:#3a8a50;color:#3a8a50;background:rgba(58,138,80,0.08)}
+.villain-b{border-color:var(--red);color:var(--red);background:rgba(204,0,0,0.08)}
+.anti-b{border-color:#c8a84b;color:#c8a84b;background:rgba(200,168,75,0.08)}
+.c-faction{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:0.4rem}
+.c-name{font-family:'Orbitron',monospace;font-size:0.92rem;font-weight:700;color:rgba(255,255,255,0.92);text-transform:uppercase;line-height:1.2}
+.c-games{font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:0.4rem;letter-spacing:0.03em;line-height:1.5}
+.c-cta{margin-top:0.85rem;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;color:var(--red);text-transform:uppercase;display:flex;align-items:center;gap:0.4rem;opacity:0;transform:translateX(-10px);transition:all 0.35s}
+.c-status{display:flex;align-items:center;gap:0.4rem;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.15em;text-transform:uppercase}
+.s-dot{width:5px;height:5px;border-radius:50%}
+.s-alive{background:#3a8a50;box-shadow:0 0 5px #3a8a50}
+.s-dec{background:var(--red);box-shadow:0 0 5px var(--red)}
+.s-unk{background:#c8a84b;box-shadow:0 0 5px #c8a84b}
+/* MODAL */
+.m-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.96);z-index:10000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s;backdrop-filter:blur(25px)}
+.m-overlay.open{opacity:1;pointer-events:all}
+.m-panel{position:relative;width:92%;max-width:920px;max-height:92vh;overflow-y:auto;background:#0a0a0a;border:1px solid rgba(204,0,0,0.25);clip-path:polygon(0 0,calc(100% - 25px) 0,100% 25px,100% 100%,25px 100%,0 calc(100% - 25px));transform:scale(0.9) translateY(25px);transition:transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94)}
+.m-overlay.open .m-panel{transform:scale(1) translateY(0)}
+.m-panel::-webkit-scrollbar{width:2px}.m-panel::-webkit-scrollbar-thumb{background:var(--red)}
+.m-hdr{padding:2rem 2rem 1.25rem;border-bottom:1px solid rgba(204,0,0,0.15);position:relative}
+.m-close{position:absolute;top:1.5rem;right:1.5rem;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--dimmer);cursor:none;text-transform:uppercase;background:none;border:none;transition:color 0.3s;padding:0.25rem 0.5rem;border:1px solid transparent;transition:all 0.3s}
+.m-close:hover{color:var(--red);border-color:var(--red)}
+.m-tag{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.4em;color:var(--red);text-transform:uppercase;margin-bottom:0.4rem}
+.m-name{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2.4rem);font-weight:900;text-transform:uppercase;color:var(--text);line-height:1}
+.m-body{padding:1.75rem 2rem 2rem;display:grid;grid-template-columns:1fr 1.6fr;gap:2rem}
+@media(max-width:620px){.m-body{grid-template-columns:1fr}}
+.m-portrait{height:280px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0}
+.m-p-initials{font-family:'Orbitron',monospace;font-size:4.5rem;font-weight:900;color:rgba(255,255,255,0.1);letter-spacing:-0.05em;z-index:1}
+.m-p-lines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.18) 2px,rgba(0,0,0,0.18) 3px)}
+.m-p-corner{position:absolute;top:0;right:0;width:14px;height:14px;background:rgba(204,0,0,0.3)}
+.m-lbl{font-family:'Share Tech Mono',monospace;font-size:0.57rem;letter-spacing:0.3em;color:var(--red);text-transform:uppercase;margin-bottom:0.4rem;margin-top:1.3rem}
+.m-lbl:first-child{margin-top:0}
+.m-txt{font-size:0.9rem;color:#908878;line-height:1.75;letter-spacing:0.02em}
+.m-games{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem}
+.m-game{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;padding:0.2rem 0.65rem;border:1px solid rgba(204,0,0,0.25);color:#806060;text-transform:uppercase}
+.m-abils{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem}
+.m-abil{font-size:0.78rem;padding:0.2rem 0.65rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);color:#908878}
+.m-quote{margin-top:1.3rem;padding:1rem 1.1rem;border-left:2px solid var(--red);background:rgba(204,0,0,0.03);font-style:italic;color:var(--dimmer);font-size:0.88rem;letter-spacing:0.02em;line-height:1.6}
+.m-stats{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.3rem}
+.m-stat{background:rgba(255,255,255,0.02);padding:0.65rem 0.85rem;border:1px solid rgba(255,255,255,0.05)}
+.m-stat-lbl{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.25em;color:var(--dimmer);text-transform:uppercase;margin-bottom:0.2rem}
+.m-stat-val{font-family:'Orbitron',monospace;font-size:0.78rem;color:#b0a090;font-weight:600}
+/* QUIZ */
+#quiz{background:#050505;padding:5rem 2rem 6rem;position:relative;overflow:hidden}
+.q-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(204,0,0,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(204,0,0,0.025) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
+.q-radial{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(139,0,0,0.07) 0%,transparent 60%);pointer-events:none}
+/* QUIZ LANDING */
+#q-land{max-width:680px;margin:0 auto;text-align:center}
+.q-bh{font-size:80px;color:var(--red);opacity:0.7;line-height:1;margin-bottom:1.5rem;animation:qPulse 3s ease-in-out infinite}
+@keyframes qPulse{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:0.9;transform:scale(1.05)}}
+.q-title{font-family:'Orbitron',monospace;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:900;text-transform:uppercase;color:var(--text);line-height:1;margin-bottom:1rem}
+.q-desc{font-size:0.95rem;color:var(--dim);letter-spacing:0.04em;line-height:1.75;max-width:480px;margin:0 auto 2.5rem}
+.q-btn{position:relative;display:inline-flex;align-items:center;gap:0.85rem;font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;padding:1rem 2.5rem;background:transparent;border:1px solid var(--red);color:var(--red);cursor:none;transition:all 0.3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.q-btn:hover{background:rgba(204,0,0,0.09);box-shadow:0 0 40px rgba(204,0,0,0.2),inset 0 0 30px rgba(204,0,0,0.04);transform:scale(1.02)}
+.q-meta{display:flex;justify-content:center;gap:3rem;margin-top:3rem}
+.q-m-item{text-align:center}
+.q-m-num{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:var(--red)}
+.q-m-lbl{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;color:var(--dimmer);text-transform:uppercase;margin-top:0.2rem}
+/* QUIZ PANEL */
+#q-panel{display:none;max-width:800px;margin:0 auto}
+#q-panel.act{display:block}
+.q-prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
+.q-qnum{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--red)}
+.q-bar{flex:1;height:2px;background:rgba(255,255,255,0.05);margin:0 1.25rem;position:relative}
+.q-fill{height:100%;background:linear-gradient(90deg,var(--red-dark),var(--red));transition:width 0.5s ease;box-shadow:0 0 8px var(--red)}
+.q-card{background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.055);padding:2.5rem;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));position:relative}
+.q-card-corner{position:absolute;top:0;right:0;width:18px;height:18px;background:rgba(204,0,0,0.2)}
+.q-text{font-family:'Orbitron',monospace;font-size:clamp(0.95rem,2.5vw,1.15rem);font-weight:600;color:var(--text);line-height:1.55;margin-bottom:2rem}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.85rem}
+@media(max-width:560px){.q-opts{grid-template-columns:1fr}}
+.q-opt{padding:0.95rem 1.1rem;border:1px solid rgba(255,255,255,0.065);background:rgba(255,255,255,0.018);color:#908878;font-family:'Rajdhani',sans-serif;font-size:0.92rem;letter-spacing:0.04em;cursor:none;transition:all 0.3s;text-align:left;clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));position:relative}
+.q-opt:hover{border-color:rgba(204,0,0,0.35);background:rgba(204,0,0,0.04);color:var(--text)}
+.q-opt.sel{border-color:var(--red);background:rgba(204,0,0,0.09);color:var(--text)}
+.q-opt-letter{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--red);margin-right:0.6rem;letter-spacing:0.1em}
+.q-nav{display:flex;justify-content:flex-end;margin-top:1.25rem}
+.q-next{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.6rem 1.5rem;border:1px solid rgba(204,0,0,0.4);color:var(--dim);background:transparent;cursor:none;transition:all 0.3s;opacity:0;pointer-events:none}
+.q-next.ready{opacity:1;pointer-events:all}.q-next.ready:hover{border-color:var(--red);color:var(--red);background:rgba(204,0,0,0.06)}
+/* RESULTS */
+#q-results{display:none;max-width:800px;margin:0 auto}
+#q-results.act{display:block}
+.r-hdr{text-align:center;margin-bottom:2.5rem}
+.r-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2.2rem);font-weight:900;text-transform:uppercase;color:var(--text);margin-bottom:0.4rem}
+.r-sub{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.35em;color:var(--red);text-transform:uppercase}
+.r-box{background:rgba(255,255,255,0.018);border:1px solid rgba(204,0,0,0.12);padding:2rem;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));margin-bottom:1.5rem}
+.r-medals{display:flex;gap:0.4rem;margin-bottom:1.5rem;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--dimmer)}
+.r-item{margin-bottom:1.75rem}
+.r-item:last-child{margin-bottom:0}
+.r-item-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.5rem}
+.r-char-name{font-family:'Orbitron',monospace;font-size:0.82rem;font-weight:700;color:var(--text);text-transform:uppercase}
+.r-pct{font-family:'Share Tech Mono',monospace;font-size:0.82rem}
+.r-track{height:5px;background:rgba(255,255,255,0.04);position:relative;margin-bottom:0.6rem}
+.r-bar{height:100%;width:0;transition:width 1.6s cubic-bezier(0.25,0.46,0.45,0.94)}
+.r-bar.gold{background:linear-gradient(90deg,#7a5c10,#c8a84b);box-shadow:0 0 10px rgba(200,168,75,0.5)}
+.r-bar.silver{background:linear-gradient(90deg,#404040,#a0a0a0);box-shadow:0 0 8px rgba(160,160,160,0.3)}
+.r-bar.bronze{background:linear-gradient(90deg,var(--red-dark),var(--red));box-shadow:0 0 8px rgba(204,0,0,0.45)}
+.r-match-desc{font-size:0.83rem;color:var(--dimmer);letter-spacing:0.02em;line-height:1.55}
+.r-retry{display:inline-flex;align-items:center;gap:0.6rem;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.7rem 1.75rem;border:1px solid rgba(255,255,255,0.08);color:var(--dimmer);background:transparent;cursor:none;transition:all 0.3s;margin-top:1.5rem}
+.r-retry:hover{border-color:rgba(255,255,255,0.25);color:var(--text)}
+/* FOOTER */
+footer{background:#040404;border-top:1px solid rgba(204,0,0,0.1);padding:2.5rem 2rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;color:#282020;text-transform:uppercase;line-height:2}
+.f-bh{font-size:1.2rem;color:rgba(204,0,0,0.15);display:block;margin-bottom:0.5rem}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cur"><div id="cur-ring"></div><div id="cur-dot"></div></div>
+
+<!-- NAV -->
+<nav>
+  <div class="n-logo">
+    <svg width="20" height="20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g class="bh-spin" style="transform-origin:50px 50px">
+        <circle cx="50" cy="50" r="46" stroke="#cc0000" stroke-width="2" fill="none"/>
+        <circle cx="50" cy="50" r="8" fill="#cc0000"/>
+        <circle cx="50" cy="50" r="14" stroke="#cc0000" stroke-width="1.5" fill="none"/>
+        <path d="M50 36 A16 16 0 0 0 36 50 L44 50 A8 8 0 0 1 50 44 Z" fill="#cc0000"/>
+        <path d="M50 36 A16 16 0 0 1 64 50 L56 50 A8 8 0 0 0 50 44 Z" fill="#cc0000"/>
+        <path d="M36 50 A16 16 0 0 0 50 64 L50 56 A8 8 0 0 1 44 50 Z" fill="#cc0000"/>
+        <path d="M64 50 A16 16 0 0 1 50 64 L50 56 A8 8 0 0 0 56 50 Z" fill="#cc0000"/>
+        <path d="M43 64 A16 16 0 0 0 36 50 L44 50 A8 8 0 0 1 49 58 Z" fill="#cc0000"/>
+        <path d="M57 64 A16 16 0 0 1 64 50 L56 50 A8 8 0 0 0 51 58 Z" fill="#cc0000"/>
+      </g>
+    </svg>
+    Umbrella Corp
+  </div>
+  <div class="n-links">
+    <a href="#characters">Personnel Files</a>
+    <a href="#quiz">Psych Eval</a>
+  </div>
+  <div class="n-badge">● CLASSIFIED</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-particles" id="particles"></div>
+  <div class="h-rings"><div class="h-ring"></div><div class="h-ring"></div><div class="h-ring"></div></div>
+  <div class="h-bh">☣</div>
+  <div class="h-content">
+    <div class="h-tag">Umbrella Corporation — Classified Archive</div>
+    <div class="h-title">
+      <span class="t1">RESIDENT</span>
+      <span class="t2">EVIL</span>
+    </div>
+    <div class="h-line"></div>
+    <div class="h-sub">Personnel Dossiers &amp; Psychological Assessments</div>
+  </div>
+  <div class="h-scroll"><span>SCROLL</span><div class="h-arrow"></div></div>
+</section>
+
+<div class="s-div"></div>
+
+<!-- CHARACTERS -->
+<section id="characters">
+  <div class="text-center reveal" style="max-width:700px;margin:0 auto">
+    <div class="sec-tag">Personnel Files — Clearance Level 5</div>
+    <div class="sec-title">Character Dossiers</div>
+    <div class="sec-desc">Classified records on key operatives, survivors, and bioterrorist threats. Select a file to access full intelligence data.</div>
+  </div>
+  <div class="filter-row reveal" style="transition-delay:0.1s">
+    <button class="f-btn act" onclick="filterChars('ALL')">All Subjects</button>
+    <button class="f-btn" onclick="filterChars('HERO')">Heroes</button>
+    <button class="f-btn" onclick="filterChars('VILLAIN')">Villains</button>
+    <button class="f-btn" onclick="filterChars('ANTI-HERO')">Anti-Heroes</button>
+  </div>
+  <div class="char-grid" id="charGrid"></div>
+</section>
+
+<div class="s-div" style="background:var(--bg2)"></div>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="q-grid"></div>
+  <div class="q-radial"></div>
+
+  <!-- LANDING -->
+  <div id="q-land" class="reveal">
+    <div class="q-bh">☣</div>
+    <div class="sec-tag" style="text-align:center">Psychological Assessment — Umbrella Protocol</div>
+    <div class="q-title">Which Resident Evil<br>Character Are You?</div>
+    <div class="q-desc">Submit to a 10-question psychological evaluation. Our behavioral analysis algorithm will match your profile against known operatives and threats in our database.</div>
+    <button class="q-btn" onclick="startQuiz()">
+      <span>▶</span> Begin Assessment
+    </button>
+    <div class="q-meta">
+      <div class="q-m-item"><div class="q-m-num">10</div><div class="q-m-lbl">Questions</div></div>
+      <div class="q-m-item"><div class="q-m-num">12</div><div class="q-m-lbl">Characters</div></div>
+      <div class="q-m-item"><div class="q-m-num">3</div><div class="q-m-lbl">Top Matches</div></div>
+    </div>
+  </div>
+
+  <!-- QUIZ PANEL -->
+  <div id="q-panel">
+    <div class="q-prog-row">
+      <div class="q-qnum" id="q-num-lbl">QUESTION 01/10</div>
+      <div class="q-bar"><div class="q-fill" id="q-fill" style="width:10%"></div></div>
+      <div class="q-qnum" id="q-char-count">0 SCORED</div>
+    </div>
+    <div class="q-card">
+      <div class="q-card-corner"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-opts" id="q-opts"></div>
+      <div class="q-nav">
+        <button class="q-next" id="q-next" onclick="nextQ()">NEXT →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="q-results">
+    <div class="r-hdr">
+      <div class="r-title">Assessment Complete</div>
+      <div class="r-sub">Psychological Profile — Top Matches</div>
+    </div>
+    <div class="r-box" id="r-box">
+      <div class="r-medals">▸ ANALYZING BEHAVIORAL PROFILE...</div>
+      <div id="r-items"></div>
+    </div>
+    <div style="text-align:center">
+      <button class="r-retry" onclick="resetQuiz()">↩ RETAKE ASSESSMENT</button>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="m-overlay" id="modal" onclick="closeModal(event)">
+  <div class="m-panel" id="m-panel">
+    <div class="m-hdr">
+      <div class="m-tag" id="m-tag">CLASSIFIED PERSONNEL FILE</div>
+      <div class="m-name" id="m-name"></div>
+      <button class="m-close" onclick="closeModalBtn()">[ CLOSE FILE ]</button>
+    </div>
+    <div class="m-body">
+      <div>
+        <div class="m-portrait" id="m-portrait">
+          <div class="m-p-lines"></div>
+          <div class="m-p-corner"></div>
+          <div class="m-p-initials" id="m-initials"></div>
+        </div>
+        <div class="m-stats" id="m-stats"></div>
+      </div>
+      <div>
+        <div class="m-lbl">Operative Profile</div>
+        <div class="m-txt" id="m-desc"></div>
+        <div class="m-lbl">Known Appearances</div>
+        <div class="m-games" id="m-games"></div>
+        <div class="m-lbl">Documented Abilities</div>
+        <div class="m-abils" id="m-abils"></div>
+        <div class="m-quote" id="m-quote"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="f-bh">☣</span>
+  Umbrella Corporation — Classified Archive — All Data Restricted<br>
+  Raccoon City Incident Database · T-Virus Research Division · B.O.W. Threat Registry<br>
+  © Umbrella Corp. Unauthorized access is punishable under Executive Order 14
+</footer>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────────
+const CHARS = [
+  {
+    id:'leon',name:'Leon S. Kennedy',role:'HERO',faction:'U.S. Government / R.P.D.',
+    games:['Resident Evil 2','Resident Evil 4','Resident Evil 6','RE: Infinite Darkness'],
+    first:'1998',status:'ALIVE',threat:'N/A',
+    desc:"Former Raccoon City rookie cop turned elite U.S. government special agent. Survived the T-virus catastrophe as a raw recruit and emerged as one of the world's most capable anti-bioterrorism operatives. Known for combining deadly marksmanship with razor-sharp instincts and an unbreakable will to protect others.",
+    abilities:['Expert Marksmanship','Close-Quarters Combat','Tactical Evasion','Crisis Leadership','Sharpshooting'],
+    quote:"Even if I don't make it out of here... I have to try.",
+    gf:'#0a1c30',gt:'#040c18',ac:'#3a7bd5',initials:'LSK'
+  },
+  {
+    id:'jill',name:'Jill Valentine',role:'HERO',faction:'S.T.A.R.S. / B.S.A.A.',
+    games:['Resident Evil','Resident Evil 3','Resident Evil 5','RE: Revelations'],
+    first:'1996',status:'ALIVE',threat:'N/A',
+    desc:"S.T.A.R.S. Alpha Team's point-woman and co-founder of the B.S.A.A. Survived direct encounters with the Nemesis T-Type, developed partial T-virus immunity, and operated as a double agent against Umbrella. Regarded as one of the most complete anti-B.O.W. operatives in existence.",
+    abilities:['Lock-picking','Explosives Expert','Adaptive Combat','T-Virus Resistance','Tactical Intelligence'],
+    quote:"You want S.T.A.R.S.? I'll give you S.T.A.R.S.!",
+    gf:'#0c1422',gt:'#060910',ac:'#c8a84b',initials:'JV'
+  },
+  {
+    id:'chris',name:'Chris Redfield',role:'HERO',faction:'S.T.A.R.S. / B.S.A.A.',
+    games:['Resident Evil','Resident Evil 5','Resident Evil 6','Resident Evil 7','Resident Evil Village'],
+    first:'1996',status:'ALIVE',threat:'N/A',
+    desc:"Former Air Force pilot and S.T.A.R.S. Alpha Team member who has faced more bioterrorism threats than any operative alive. Built like a freight train and twice as relentless. Rose to B.S.A.A. Commander status. Famous for punching a boulder into lava. Absolutely no weaknesses — except maybe his sister.",
+    abilities:['Military Combat','Weapons Mastery','Team Command','Boulder Punching','Unbreakable Endurance'],
+    quote:"I'm not gonna leave you behind. Not this time.",
+    gf:'#141008',gt:'#080603',ac:'#9a7820',initials:'CR'
+  },
+  {
+    id:'claire',name:'Claire Redfield',role:'HERO',faction:'TerraSave',
+    games:['Resident Evil 2','Resident Evil Code: Veronica','RE: Revelations 2'],
+    first:'1998',status:'ALIVE',threat:'N/A',
+    desc:"Chris Redfield's younger sister — a motorcycle-riding college student who rode into Raccoon City looking for her brother and found herself in the middle of the T-virus apocalypse. Natural protector, empathetic, and fiercely resourceful. Now works with TerraSave, an NGO combating bioterrorism.",
+    abilities:['Improvised Combat','Protective Instinct','Tactical Ingenuity','Marksmanship','Survivor Resilience'],
+    quote:"I can't just leave you here. That's not who I am.",
+    gf:'#220808',gt:'#100404',ac:'#cc4422',initials:'CLR'
+  },
+  {
+    id:'ada',name:'Ada Wong',role:'ANTI-HERO',faction:'Unknown — Multiple Affiliations',
+    games:['Resident Evil 2','Resident Evil 4','Resident Evil 6'],
+    first:'1998',status:'ALIVE',threat:'VARIABLE',
+    desc:"A spy of unknown true allegiance who has manipulated both heroes and villains across multiple global incidents. She has worked for Umbrella, rival organizations, and herself — often simultaneously. Operates with calculated precision, using charm, deception, and a grappling hook with equal efficiency.",
+    abilities:['Espionage','Grappling Hook Mastery','Seduction & Manipulation','Multi-Faction Access','Calculated Betrayal'],
+    quote:"I'm not the kind of person who gets pinned down.",
+    gf:'#1e0505',gt:'#0e0202',ac:'#aa1111',initials:'AW'
+  },
+  {
+    id:'ethan',name:'Ethan Winters',role:'HERO',faction:'Civilian',
+    games:['Resident Evil 7: Biohazard','Resident Evil Village'],
+    first:'2017',status:'DECEASED',threat:'N/A',
+    desc:"An ordinary man who endured extraordinary horror. With no combat training, Ethan survived the Baker estate and the horrors of the Village through sheer love for his family. Later revealed to have been killed early in RE7 — his survival powered by a mold infection that granted uncanny regeneration.",
+    abilities:['Mold Regeneration','Improvised Combat','Fatherly Devotion','Unbreakable Will','Hand Re-attachment'],
+    quote:"She's my daughter. Whatever it takes — whatever the cost.",
+    gf:'#141414',gt:'#080808',ac:'#787878',initials:'EW'
+  },
+  {
+    id:'wesker',name:'Albert Wesker',role:'VILLAIN',faction:'Umbrella / Tricell / Himself',
+    games:['Resident Evil','Resident Evil 0','Resident Evil Code: Veronica','Resident Evil 5'],
+    first:'1996',status:'DECEASED',threat:'EXTREME',
+    desc:"The franchise's greatest villain. Former S.T.A.R.S. captain and Umbrella researcher who injected himself with a prototype virus granting superhuman speed, strength, and near-invulnerability. Harbored a god complex and a plan to reset humanity through a global pandemic. Was finally defeated by Chris Redfield — with a rocket launcher.",
+    abilities:['Superhuman Speed','Enhanced Strength','Virus Manipulation','Strategic Genius','Telekinesis'],
+    quote:"Foolish child — did you really think you could surpass me?",
+    gf:'#0e0e0e',gt:'#040404',ac:'#d0d0d0',initials:'AW'
+  },
+  {
+    id:'nemesis',name:'Nemesis T-Type',role:'VILLAIN',faction:'Umbrella Corporation',
+    games:['Resident Evil 3','RE: The Umbrella Chronicles'],
+    first:'1999',status:'DECEASED',threat:'EXTREME',
+    desc:"An advanced Tyrant model fused with a Nemesis parasite, granting it weapons capability and superior intelligence beyond any prior B.O.W. Deployed in Raccoon City with a singular directive: eliminate all S.T.A.R.S. members. Hunts relentlessly, adapts after every defeat, and is barely slowed by anything short of an anti-tank weapon.",
+    abilities:['Indestructibility','Rocket Launcher','Tentacle Strikes','S.T.A.R.S. Tracking','Adaptive Mutation'],
+    quote:"S.T.A.R.S... S.T.A.R.S...",
+    gf:'#180a20',gt:'#0c0510',ac:'#8040aa',initials:'NEM'
+  },
+  {
+    id:'dimitrescu',name:'Lady Alcina Dimitrescu',role:'VILLAIN',faction:'The Four Lords / Mother Miranda',
+    games:['Resident Evil Village'],
+    first:'2021',status:'DECEASED',threat:'HIGH',
+    desc:"Standing at 9'6\", Lady Dimitrescu rules Castle Dimitrescu with refined elegance and vicious cruelty. Infected with the Cadou parasite and inhabited by a strain of mold-based organism within her bloodstream that allows her to regenerate. Commands her three daughters and considers herself above Mother Miranda's other lords.",
+    abilities:['Immortal Regeneration','Razor Claws','Giant Winged Form','Aristocratic Dominance','Blood Drain'],
+    quote:"Oh... you dare enter MY castle? How delightfully foolish.",
+    gf:'#18140a',gt:'#0c0a04',ac:'#d4af6a',initials:'ALD'
+  },
+  {
+    id:'baker',name:'Jack Baker',role:'VILLAIN',faction:'The Baker Family / Eveline',
+    games:['Resident Evil 7: Biohazard'],
+    first:'2017',status:'DECEASED',threat:'HIGH',
+    desc:"A Louisiana swamp farmer who welcomed Eveline into his family out of compassion — and was rewarded with total domination by her mold. Transformed into a near-unkillable monstrosity, Jack Baker retains twisted paternal instincts even in his horrifying mutations. His final act was one of sacrifice.",
+    abilities:['Mold Regeneration','Superhuman Strength','Chainsaw Mastery','Mutation Forms','Relentless Pursuit'],
+    quote:"Welcome to the family, son! Ha ha ha HA!",
+    gf:'#0c1208',gt:'#060804',ac:'#5a7a30',initials:'JB'
+  },
+  {
+    id:'birkin',name:'William Birkin',role:'VILLAIN',faction:'Umbrella Corporation',
+    games:['Resident Evil 2','Resident Evil 0'],
+    first:'1998',status:'DECEASED',threat:'EXTREME',
+    desc:"Umbrella's most brilliant virologist and the creator of the G-Virus — the most powerful mutagenic agent ever developed. When Umbrella's agents came to seize his work, a dying Birkin injected himself with the G-Virus, transforming into a series of increasingly horrific mutations driven by an obsessive need to protect his creation.",
+    abilities:['G-Virus Mutation','Progressive Evolution','Superhuman Strength','Multiple Eyes','Virus Transmission'],
+    quote:"My... G-Virus... my precious G... they can't take it...",
+    gf:'#081408',gt:'#040a04',ac:'#30aa30',initials:'WB'
+  },
+  {
+    id:'heisenberg',name:'Karl Heisenberg',role:'VILLAIN',faction:'The Four Lords / Mother Miranda',
+    games:['Resident Evil Village'],
+    first:'2021',status:'DECEASED',threat:'HIGH',
+    desc:"A cigar-smoking, trenchcoat-wearing lord with telekinetic command over all metal and electromagnetic fields. Secretly despises Mother Miranda's control and attempted to recruit Ethan Winters as an ally to overthrow her. His underground factory hosts a colossal mechanized soldier. Morally grey, darkly funny, and genuinely formidable.",
+    abilities:['Metal Telekinesis','Electromagnetic Mastery','Industrial Engineering','Mechanical Soldier Creation','Cunning Strategy'],
+    quote:"I control metal. Every bolt, every blade — all mine.",
+    gf:'#121212',gt:'#070707',ac:'#909090',initials:'KH'
+  }
+];
+
+const QUESTIONS = [
+  {
+    q:"When you enter an unfamiliar and dangerous situation, your first instinct is to...",
+    opts:[
+      {t:"Charge forward — hesitation gets people killed",sc:{chris:3,nemesis:2,jack:2,wesker:1,ethan:1}},
+      {t:"Analyze the environment, plan a route, minimize exposure",sc:{jill:3,wesker:2,birkin:1,heisenberg:1,leon:1}},
+      {t:"Focus entirely on protecting whoever is counting on you",sc:{leon:2,claire:3,ethan:3,baker:1}},
+      {t:"Use the chaos to move undetected and gather intelligence",sc:{ada:3,wesker:2,heisenberg:1,jill:1}}
+    ]
+  },
+  {
+    q:"Others would most likely describe your greatest strength as...",
+    opts:[
+      {t:"Raw determination — nothing stops you once you're set on a goal",sc:{chris:2,ethan:3,leon:2,nemesis:1}},
+      {t:"Brilliant intellect — you think three moves ahead of everyone",sc:{wesker:3,birkin:3,heisenberg:2,jill:1}},
+      {t:"Compassion — you fight for people, not principles",sc:{claire:3,ethan:2,leon:1,baker:2}},
+      {t:"Adaptability — you thrive in chaos and uncertainty",sc:{jill:2,ada:3,leon:2,heisenberg:1}}
+    ]
+  },
+  {
+    q:"If given unlimited resources and power, you would use them to...",
+    opts:[
+      {t:"Perfect a scientific creation that will change everything forever",sc:{birkin:3,wesker:2,heisenberg:3}},
+      {t:"Build an empire and elevate yourself above ordinary humanity",sc:{wesker:3,dimitrescu:3,nemesis:1}},
+      {t:"Protect your family and loved ones at any and all costs",sc:{jack:3,ethan:3,claire:2,baker:1}},
+      {t:"Pursue your own agenda — playing all sides against each other",sc:{ada:3,heisenberg:2,wesker:1}}
+    ]
+  },
+  {
+    q:"When facing an enemy far more powerful than yourself, you...",
+    opts:[
+      {t:"Fight anyway — dying on your feet beats surrendering on your knees",sc:{chris:3,jill:2,leon:2,ethan:1}},
+      {t:"Outmaneuver them — brute force is never your only weapon",sc:{leon:2,ada:2,wesker:2,jill:1}},
+      {t:"Improvise with everything around you to survive",sc:{ethan:3,claire:2,jill:1,leon:1}},
+      {t:"Transform the threat — become something greater than the enemy ever imagined",sc:{wesker:3,birkin:2,nemesis:1,heisenberg:2}}
+    ]
+  },
+  {
+    q:"Which environment do you feel most at home in?",
+    opts:[
+      {t:"Military or law enforcement — structure, duty, and order",sc:{chris:3,jill:2,leon:1}},
+      {t:"A laboratory or workshop — creating and experimenting",sc:{birkin:3,heisenberg:3,wesker:1}},
+      {t:"Urban chaos — cities full of shadows, secrets, and movement",sc:{leon:2,ada:3,claire:1}},
+      {t:"A place of power — a mansion, a castle, a throne",sc:{wesker:2,dimitrescu:3,nemesis:1}}
+    ]
+  },
+  {
+    q:"Your relationship with rules and authority is...",
+    opts:[
+      {t:"Respectful — order and structure matter for a reason",sc:{chris:3,jill:1,leon:1}},
+      {t:"Selective — I bend them when necessary for the greater good",sc:{leon:3,jill:2,claire:1,ethan:1}},
+      {t:"Instrumental — I use rules as tools, never as constraints",sc:{ada:3,wesker:2,heisenberg:2}},
+      {t:"Irrelevant — I operate beyond the reach of conventional authority",sc:{wesker:3,birkin:2,dimitrescu:2,nemesis:1}}
+    ]
+  },
+  {
+    q:"If you discovered a secret that could destroy powerful institutions, you would...",
+    opts:[
+      {t:"Expose it immediately — the world deserves the truth",sc:{chris:3,claire:2,jill:2}},
+      {t:"Hold it in reserve — information is the most valuable currency",sc:{ada:3,wesker:2,heisenberg:1}},
+      {t:"Carry the burden alone to protect the people you love",sc:{ethan:3,leon:2,jill:1}},
+      {t:"Weaponize it to dismantle your enemies or achieve your vision",sc:{wesker:3,birkin:2,heisenberg:2}}
+    ]
+  },
+  {
+    q:"When all hope seems lost, what drives you forward?",
+    opts:[
+      {t:"Training and duty — I was built for exactly this",sc:{chris:2,jill:3,leon:1}},
+      {t:"The people I need to get back to — my reason to survive",sc:{ethan:3,claire:3,leon:1}},
+      {t:"Ambition — I have too much left to accomplish to die here",sc:{wesker:3,birkin:2,heisenberg:2,ada:1}},
+      {t:"Spite — sheer, burning refusal to let anyone else win",sc:{heisenberg:3,nemesis:2,jack:2,jill:1}}
+    ]
+  },
+  {
+    q:"Others would describe your relationship with power as...",
+    opts:[
+      {t:"Reluctant — you'd rather serve than lead",sc:{ethan:2,claire:2,jill:1,leon:1}},
+      {t:"Earned — you work relentlessly to deserve every bit of authority",sc:{chris:3,jill:2,leon:2}},
+      {t:"Natural — authority simply gravitates toward you without effort",sc:{dimitrescu:3,wesker:2,heisenberg:1}},
+      {t:"Transcendent — you operate beyond conventional hierarchies entirely",sc:{ada:3,nemesis:1,wesker:2,birkin:1}}
+    ]
+  },
+  {
+    q:"At your core, what do you believe poses the greatest threat to humanity?",
+    opts:[
+      {t:"Complacency and ignorance — evil always thrives in the dark",sc:{chris:3,claire:2,jill:2}},
+      {t:"Weakness — only the strong deserve a future",sc:{wesker:3,nemesis:1,dimitrescu:2,birkin:1}},
+      {t:"Humanity's failure to evolve, grow, and transcend its limits",sc:{birkin:3,wesker:2,heisenberg:2}},
+      {t:"Loss — of family, of identity, of what truly matters",sc:{ethan:3,claire:2,leon:1,jack:2}}
+    ]
+  }
+];
+
+// ─── PARTICLES ─────────────────────────────────────────────────────────────
+(function spawnParticles(){
+  const container=document.getElementById('particles');
+  for(let i=0;i<25;i++){
+    const p=document.createElement('div');
+    p.className='ptcl';
+    p.style.cssText=`left:${Math.random()*100}%;animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*12}s;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px`;
+    container.appendChild(p);
+  }
+})();
+
+// ─── CURSOR ─────────────────────────────────────────────────────────────────
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px'});
+
+// ─── SCROLL REVEAL ──────────────────────────────────────────────────────────
+const revObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+// ─── RENDER CHARACTER CARDS ─────────────────────────────────────────────────
+function renderCards(filter='ALL'){
+  const grid=document.getElementById('charGrid');
+  grid.innerHTML='';
+  CHARS.filter(c=>filter==='ALL'||c.role===filter).forEach((c,i)=>{
+    const badgeCls=c.role==='HERO'?'hero-b':c.role==='VILLAIN'?'villain-b':'anti-b';
+    const statusDot=c.status==='ALIVE'?'s-alive':c.status==='DECEASED'?'s-dec':'s-unk';
+    const card=document.createElement('div');
+    card.className='c-card';
+    card.style.transitionDelay=`${i*0.07}s`;
+    card.dataset.id=c.id;
+    card.innerHTML=`
+      <div class="c-bg" style="background:linear-gradient(135deg,${c.gf} 0%,${c.gt} 100%)"></div>
+      <div class="c-scan"></div>
+      <div class="c-glow" style="background:radial-gradient(ellipse at 50% 20%,${c.ac}22 0%,transparent 65%)"></div>
+      <div class="c-border"></div>
+      <div class="c-corner"></div>
+      <div class="c-sweep"></div>
+      <div class="c-initials">${c.initials}</div>
+      <div class="c-content">
+        <div>
+          <span class="c-badge ${badgeCls}">
+            <span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block"></span>
+            ${c.role}
+          </span>
+        </div>
+        <div>
+          <div class="c-faction">${c.faction}</div>
+          <div class="c-name">${c.name}</div>
+          <div class="c-games">${c.games.slice(0,3).join(' · ')}${c.games.length>3?' · +more':''}</div>
+          <div class="c-status" style="margin-top:0.7rem">
+            <span class="s-dot ${statusDot}"></span> ${c.status} &nbsp;·&nbsp; First: RE${c.first}
+          </div>
+          <div class="c-cta">▸ ACCESS CLASSIFIED FILE</div>
+        </div>
+      </div>`;
+    card.addEventListener('click',()=>openModal(c.id));
+    grid.appendChild(card);
+    setTimeout(()=>card.classList.add('vis'),50+i*80);
+  });
+}
+renderCards();
+
+// ─── FILTER ─────────────────────────────────────────────────────────────────
+function filterChars(f){
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('act'));
+  event.target.classList.add('act');
+  renderCards(f);
+}
+
+// ─── MODAL ──────────────────────────────────────────────────────────────────
+function openModal(id){
+  const c=CHARS.find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('m-tag').textContent=`${c.role} — CLEARANCE LEVEL 5`;
+  document.getElementById('m-name').textContent=c.name;
+  document.getElementById('m-initials').textContent=c.initials;
+  const portrait=document.getElementById('m-portrait');
+  portrait.style.background=`linear-gradient(145deg,${c.gf} 0%,${c.gt} 100%)`;
+  document.getElementById('m-desc').textContent=c.desc;
+  document.getElementById('m-games').innerHTML=c.games.map(g=>`<span class="m-game">${g}</span>`).join('');
+  document.getElementById('m-abils').innerHTML=c.abilities.map(a=>`<span class="m-abil">${a}</span>`).join('');
+  document.getElementById('m-quote').innerHTML=`"${c.quote}"`;
+  document.getElementById('m-stats').innerHTML=`
+    <div class="m-stat"><div class="m-stat-lbl">First Appearance</div><div class="m-stat-val">RE ${c.first}</div></div>
+    <div class="m-stat"><div class="m-stat-lbl">Status</div><div class="m-stat-val" style="color:${c.status==='ALIVE'?'#3a8a50':c.status==='DECEASED'?'#cc0000':'#c8a84b'}">${c.status}</div></div>
+    <div class="m-stat"><div class="m-stat-lbl">Threat Level</div><div class="m-stat-val">${c.threat}</div></div>
+    <div class="m-stat"><div class="m-stat-lbl">Faction</div><div class="m-stat-val" style="font-size:0.65rem">${c.faction.split('/')[0]}</div></div>`;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){if(e.target===document.getElementById('modal'))closeModalBtn()}
+function closeModalBtn(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalBtn()});
+
+// ─── QUIZ ────────────────────────────────────────────────────────────────────
+let qIndex=0,selected=null,scores={};
+function initScores(){scores={};CHARS.forEach(c=>scores[c.id]=0)}
+
+function startQuiz(){
+  initScores();qIndex=0;selected=null;
+  document.getElementById('q-land').style.display='none';
+  document.getElementById('q-panel').classList.add('act');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=QUESTIONS[qIndex];
+  selected=null;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-num-lbl').textContent=`QUESTION ${String(qIndex+1).padStart(2,'0')}/10`;
+  document.getElementById('q-fill').style.width=`${((qIndex+1)/10)*100}%`;
+  document.getElementById('q-char-count').textContent=`${qIndex} SCORED`;
+  const optsEl=document.getElementById('q-opts');
+  const letters=['A','B','C','D'];
+  optsEl.innerHTML=q.opts.map((o,i)=>`
+    <button class="q-opt" data-idx="${i}" onclick="selectOpt(${i})">
+      <span class="q-opt-letter">[${letters[i]}]</span>${o.t}
+    </button>`).join('');
+  const next=document.getElementById('q-next');
+  next.classList.remove('ready');
+  next.textContent=qIndex===9?'SEE RESULTS →':'NEXT →';
+}
+
+function selectOpt(i){
+  document.querySelectorAll('.q-opt').forEach(b=>b.classList.remove('sel'));
+  document.querySelector(`.q-opt[data-idx="${i}"]`).classList.add('sel');
+  selected=i;
+  document.getElementById('q-next').classList.add('ready');
+}
+
+function nextQ(){
+  if(selected===null)return;
+  const opt=QUESTIONS[qIndex].opts[selected];
+  Object.entries(opt.sc).forEach(([id,pts])=>{if(scores[id]!==undefined)scores[id]+=pts});
+  if(qIndex<9){qIndex++;renderQuestion()}
+  else showResults();
+}
+
+function showResults(){
+  document.getElementById('q-panel').classList.remove('act');
+  const res=document.getElementById('q-results');
+  res.classList.add('act');
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const maxScore=sorted[0][1];
+  const barClasses=['gold','silver','bronze'];
+  const medals=['🥇 MATCH #1','🥈 MATCH #2','🥉 MATCH #3'];
+  const itemsEl=document.getElementById('r-items');
+  itemsEl.innerHTML='';
+  sorted.forEach(([id,pts],i)=>{
+    const c=CHARS.find(x=>x.id===id);
+    if(!c)return;
+    const pct=Math.round((pts/Math.max(maxScore,1))*100);
+    const div=document.createElement('div');
+    div.className='r-item';
+    div.innerHTML=`
+      <div class="r-item-hdr">
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;color:var(--dimmer);margin-bottom:0.25rem">${medals[i]}</div>
+          <div class="r-char-name">${c.name}</div>
+        </div>
+        <div class="r-pct" style="color:${i===0?'#c8a84b':i===1?'#a0a0a0':'var(--red)'}">${pct}%</div>
+      </div>
+      <div class="r-track"><div class="r-bar ${barClasses[i]}" id="rb-${id}"></div></div>
+      <div class="r-match-desc">${getMatchDesc(id,i)}</div>`;
+    itemsEl.appendChild(div);
+    setTimeout(()=>{document.getElementById('rb-'+id).style.width=pct+'%'},300+i*200);
+  });
+  res.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function getMatchDesc(id,rank){
+  const descs={
+    leon:{0:"Your instinct to protect others while remaining composed under fire mirrors Leon's defining trait: unshakeable resolve in service of people who need it.",1:"A strong secondary match — you share Leon's pragmatic heroism and talent for adapting in the middle of chaos.",2:"You have Leon's protective streak, even if your primary personality aligns more elsewhere."},
+    jill:{0:"Strategic, resilient, and impossible to break. Like Jill, you combine tactical intelligence with the kind of emotional endurance that legends are made of.",1:"Jill's methodical courage resonates in you — you plan, you adapt, and you don't quit.",2:"Your adaptability echoes Jill's, though your core drive comes from a different place."},
+    chris:{0:"Duty-bound and immovable — like Chris, you lead from the front and never leave anyone behind, regardless of the cost to yourself.",1:"Chris's relentless determination shows up strongly in you. You're built for the long fight.",2:"You have Chris's backbone, even if your motivations are more nuanced."},
+    claire:{0:"Fiercely compassionate — your desire to protect others, even strangers, mirrors Claire's brand of selfless heroism perfectly.",1:"You share Claire's resourcefulness and protective heart. People are safe around you.",2:"Claire's empathy and grit reflect something real in your personality."},
+    ada:{0:"Calculated, self-contained, and always three steps ahead. Like Ada, you play the long game, reveal little, and are loyal to your own agenda above all.",1:"Ada's strategic independence resonates with how you operate — flexible, private, effective.",2:"You have Ada's instinct for leverage, though your goals lean more toward others."},
+    ethan:{0:"You are the ultimate everyman hero — no special training, no superpowers, just absolute refusal to give up on the people you love. Pure Ethan energy.",1:"Ethan's determination and family-first drive runs deep in your profile.",2:"That stubborn love and ordinary-person resilience? Very Ethan."},
+    wesker:{0:"A chilling match. Brilliant, ambitious, and utterly self-determined. Like Wesker, you see potential where others see limits — and you have zero patience for mediocrity.",1:"Wesker's intellect and ambition surface strongly in you, even if your ends are more benign.",2:"You have Wesker's strategic mind — hopefully pointed in a better direction."},
+    nemesis:{0:"Single-minded, unstoppable, and defined by one core purpose. Like Nemesis, when you lock onto a target or a goal, nothing stands between you and it. Nothing.",1:"Nemesis's relentless pursuit and adaptability under adversity mirror your resilience.",2:"You share Nemesis's drive — that inability to simply stop."},
+    dimitrescu:{0:"You carry yourself with authority that doesn't require explanation. Like Lady Dimitrescu, power gravitates to you naturally, and you accept nothing less than what you deserve.",1:"Her pride and dominance echo something in your character — you are not easily intimidated.",2:"You share Lady Dimitrescu's sense of superiority, tempered by other instincts."},
+    baker:{0:"Family is everything to you — and like Jack Baker, you would become something monstrous to protect what you love. There is something terrifying in that devotion.",1:"Baker's protectiveness and raw, overwhelming persistence match a side of you.",2:"You have Baker's drive — that primal need to shield the people you care for."},
+    birkin:{0:"Obsessive, brilliant, and all-in on your work. Like Birkin, you have an overwhelming passion for what you create — and you'll sacrifice almost anything for it.",1:"Your intellectual drive and dedication to mastery reflect Birkin's defining qualities.",2:"You share Birkin's focus and passion, though you probably draw clearer boundaries."},
+    heisenberg:{0:"Rebellious genius. Like Heisenberg, you refuse to be controlled, you build what others call impossible, and your dark humor is the only coping mechanism you trust.",1:"Heisenberg's sharp mind and disdain for authority resonate with you.",2:"You have Heisenberg's cunning and independence — you don't follow easily."}
+  };
+  return descs[id]?.[rank]||`Your profile shows significant alignment with ${CHARS.find(x=>x.id===id)?.name||id}.`;
+}
+
+function resetQuiz(){
+  document.getElementById('q-results').classList.remove('act');
+  document.getElementById('q-land').style.display='';
+  document.getElementById('q-results').scrollIntoView?document.getElementById('quiz').scrollIntoView({behavior:'smooth'}):null;
+  initScores();
+}
+
+// ─── SCROLL ANIMATIONS FOR CHAR CARDS ───────────────────────────────────────
+const cardObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')});
+},{threshold:0.05});
+function observeCards(){document.querySelectorAll('.c-card').forEach(c=>cardObs.observe(c))}
+setTimeout(observeCards,200);
+const origRender=renderCards;
+</script>
+</body>
+</html>
